@@ -14,7 +14,7 @@ namespace Persistence.Contexts.EF_Core
         public DbSet<Product> Product { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Discount> Discount { get; set; }
-        public DbSet<Seller> Seller{ get; set; }
+        public DbSet<Seller> Seller { get; set; }
         public DbSet<SalesLine> SalesLine { get; set; }
         public DbSet<SalesLineInSeller> SalesLineInSeller { get; set; }
         public DbSet<SalesLineInProduct> SalesLineInProduct { get; set; }
@@ -28,8 +28,14 @@ namespace Persistence.Contexts.EF_Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SalesLineInSeller>().HasKey(e => new {e.SalesLineId , e.SellerId});
-            modelBuilder.Entity<SalesLineInProduct>().HasKey(e => new { e.SalesLineId, e.ProductId});
+            modelBuilder.Entity<SalesLineInSeller>().HasKey(e => new { e.SalesLineId, e.SellerId });
+            modelBuilder.Entity<SalesLineInProduct>().HasKey(e => new { e.SalesLineId, e.ProductId });
+
+            modelBuilder.Entity<SalesLineInSeller>()
+            .HasOne(e => e.PreInvoiceHeader)
+            .WithOne(e => e.SalesLineInSeller)
+            .HasForeignKey<SalesLineInSeller>(up => up.PreInvoiceHeaderId);
+            //.HasPrincipalKey<SalesLineInSeller>(sls => new { sls.SalesLineId, sls.SellerId });
         }
 
     }

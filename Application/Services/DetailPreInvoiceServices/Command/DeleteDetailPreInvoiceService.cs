@@ -41,4 +41,5 @@ namespace Application.Services.DetailPreInvoiceServices.Command
                 Message = "عملیات با موفقیت انجام شد"
             };
         }
+    }
 }
