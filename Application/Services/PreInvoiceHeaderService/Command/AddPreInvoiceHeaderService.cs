@@ -30,18 +30,33 @@ namespace Application.Services.PreInvoiceHeaderServices.Command
             if (!SalesLineId || !CustomerId || SellerId)
             {
                 return new ResultDto()
-                { 
+                {
                     IsSuccess = false,
                     Message = "اطلاعات وارد شده صحیح نمیباشد"
                 };
             }
 
-            var entity = Dto.Adapt<PreInvoiceHeader>();
-            await _context.PreInvoiceHeader.AddAsync(entity);
+            //var entity = Dto.Adapt<PreInvoiceHeader>();
+            var NewPreInvoiceHeader = new PreInvoiceHeader
+            {
+                CustomerId = Dto.CustomerId,
+            };
+
+            var NewSalesLineInSeller = new SalesLineInSeller
+            {
+                PreInvoiceHeader = NewPreInvoiceHeader,
+                SalesLineId = Dto.SalesLineId,
+                SellerId = Dto.SellerId,
+            };
+
+            await _context.SalesLineInSeller.AddAsync(NewSalesLineInSeller);
+            await _context.PreInvoiceHeader.AddAsync(NewPreInvoiceHeader);
             await _context.SaveChangesAsync();
+
             return new ResultDto()
-            { 
+            {
                 IsSuccess = true,
+                Message = "عملیات با موفقیت انجام شد"
             };
         }
     }

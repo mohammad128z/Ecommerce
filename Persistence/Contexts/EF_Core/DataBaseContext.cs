@@ -28,8 +28,13 @@ namespace Persistence.Contexts.EF_Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SalesLineInSeller>().HasKey(e => new { e.SalesLineId, e.SellerId });
+            //modelBuilder.Entity<SalesLineInSeller>().HasKey(e => new { e.SalesLineId, e.SellerId });
             modelBuilder.Entity<SalesLineInProduct>().HasKey(e => new { e.SalesLineId, e.ProductId });
+
+            modelBuilder.Entity<DetailPreInvoice>()
+                .HasOne(dpi => dpi.PreInvoiceHeader)
+                .WithOne(pih => pih.DetailPreInvoice)
+                .HasForeignKey<DetailPreInvoice>(dpi => dpi.PreInvoiceHeaderId);
 
             modelBuilder.Entity<SalesLineInSeller>()
             .HasOne(e => e.PreInvoiceHeader)

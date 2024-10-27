@@ -15,5 +15,9 @@ namespace Domain.Entities
 
         public int Count { get; set; }
         public int Price { get; set; }
+
+        public int PreInvoiceHeaderId { get; set; }
+        public virtual PreInvoiceHeader PreInvoiceHeader { get; set; }
+        public virtual ICollection<Discount> Discounts { get; set; }
     }
 }

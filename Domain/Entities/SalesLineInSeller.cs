@@ -8,6 +8,8 @@ namespace Domain.Entities
 {
     public class SalesLineInSeller
     {
+        public int Id { get; set; }
+
         public int PreInvoiceHeaderId { get; set; }
         public virtual PreInvoiceHeader PreInvoiceHeader { get; set; }
 

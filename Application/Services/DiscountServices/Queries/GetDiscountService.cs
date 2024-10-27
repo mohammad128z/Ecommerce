@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.GetDiscountServices.Queries
+namespace Application.Services.DiscountServices.Queries
 {
     public class GetDiscountService
     {

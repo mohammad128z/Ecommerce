@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Persistence.Contexts.EF_Core;
+using Application.Services.PreInvoiceHeaderServices.Command;
+using Common.Dto;
+using Application.Dtos;
+using Application.Services.PreInvoiceHeaderServices.Queries;
+using Humanizer;
 
 namespace EndPoint.Site.Controllers
 {
@@ -15,94 +20,77 @@ namespace EndPoint.Site.Controllers
     public class PreInvoiceHeadersController : ControllerBase
     {
         private readonly DataBaseContext _context;
+        private readonly AddPreInvoiceHeaderService _addPreInvoiceHeaderService;
+        private readonly DeletePreInvoiceHeaderService _deletePreInvoiceHeaderService;
+        private readonly UpdatePreInvoiceHeaderService _updatePreInvoiceHeaderService;
+        private readonly GetPreInvoiceHeaderService _getPreInvoiceHeaderService;
+        private readonly GetAllPreInvoiceHeaderService _getAllPreInvoiceHeaderService;
 
-        public PreInvoiceHeadersController(DataBaseContext context)
+        public PreInvoiceHeadersController(DataBaseContext context, AddPreInvoiceHeaderService addPreInvoiceHeaderService, DeletePreInvoiceHeaderService deletePreInvoiceHeaderService, UpdatePreInvoiceHeaderService updatePreInvoiceHeaderService, GetPreInvoiceHeaderService getPreInvoiceHeaderService, GetAllPreInvoiceHeaderService getAllPreInvoiceHeaderService)
         {
             _context = context;
+            _addPreInvoiceHeaderService = addPreInvoiceHeaderService;
+            _deletePreInvoiceHeaderService = deletePreInvoiceHeaderService;
+            _updatePreInvoiceHeaderService = updatePreInvoiceHeaderService;
+            _getPreInvoiceHeaderService = getPreInvoiceHeaderService;
+            _getAllPreInvoiceHeaderService = getAllPreInvoiceHeaderService;
         }
 
         // GET: api/PreInvoiceHeaders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PreInvoiceHeader>>> GetPreInvoiceHeader()
+        public async Task<ActionResult<ResultDto>> GetPreInvoiceHeader()
         {
-            return await _context.PreInvoiceHeader.ToListAsync();
+            return await _getAllPreInvoiceHeaderService.Execute();
         }
 
         // GET: api/PreInvoiceHeaders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PreInvoiceHeader>> GetPreInvoiceHeader(int id)
+        public async Task<ActionResult<ResultDto>> GetPreInvoiceHeader(int id)
         {
-            var preInvoiceHeader = await _context.PreInvoiceHeader.FindAsync(id);
-
-            if (preInvoiceHeader == null)
+            var ServiceResult = await _getPreInvoiceHeaderService.Execute(id);
+            if (ServiceResult.IsSuccess)
             {
-                return NotFound();
+                return Ok(ServiceResult);
             }
-
-            return preInvoiceHeader;
+            return BadRequest(ServiceResult);
         }
 
         // PUT: api/PreInvoiceHeaders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPreInvoiceHeader(int id, PreInvoiceHeader preInvoiceHeader)
+        public async Task<ActionResult<ResultDto>> PutPreInvoiceHeader(int id, PreInvoiceHeaderDto Dto)
         {
-            if (id != preInvoiceHeader.Id)
+            var ServiceResult = await _updatePreInvoiceHeaderService.Execute(Dto, id);
+            if (ServiceResult.IsSuccess)
             {
-                return BadRequest();
+                return Ok(ServiceResult);
             }
-
-            _context.Entry(preInvoiceHeader).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PreInvoiceHeaderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return BadRequest(ServiceResult);
         }
 
         // POST: api/PreInvoiceHeaders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PreInvoiceHeader>> PostPreInvoiceHeader(PreInvoiceHeader preInvoiceHeader)
+        public async Task<ActionResult<ResultDto>> PostPreInvoiceHeader(AddPreInvoiceHeaderDto Dto)
         {
-            _context.PreInvoiceHeader.Add(preInvoiceHeader);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPreInvoiceHeader", new { id = preInvoiceHeader.Id }, preInvoiceHeader);
+            var ServiceResult = await _addPreInvoiceHeaderService.Execute(Dto);
+            if (ServiceResult.IsSuccess)
+            {
+                return Ok(ServiceResult);
+            }
+            return BadRequest(ServiceResult);
         }
 
         // DELETE: api/PreInvoiceHeaders/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePreInvoiceHeader(int id)
+        public async Task<ActionResult<ResultDto>> DeletePreInvoiceHeader(int id)
         {
-            var preInvoiceHeader = await _context.PreInvoiceHeader.FindAsync(id);
-            if (preInvoiceHeader == null)
+            var ServiceResult = await _deletePreInvoiceHeaderService.Execute(id);
+            if (ServiceResult.IsSuccess)
             {
-                return NotFound();
+                return Ok(ServiceResult);
             }
-
-            _context.PreInvoiceHeader.Remove(preInvoiceHeader);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PreInvoiceHeaderExists(int id)
-        {
-            return _context.PreInvoiceHeader.Any(e => e.Id == id);
+            return BadRequest(ServiceResult);
         }
     }
 }

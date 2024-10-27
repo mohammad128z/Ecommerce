@@ -15,6 +15,8 @@ namespace Domain.Entities
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 
+        public virtual DetailPreInvoice DetailPreInvoice { get; set; }
+
         public virtual SalesLineInSeller SalesLineInSeller { get; set; }
     }
 
