@@ -27,7 +27,7 @@ namespace Application.Services.PreInvoiceHeaderServices.Command
             bool CustomerId = await _context.Customer.AnyAsync(e => e.Id == Dto.CustomerId);
             bool SellerId = await _context.Seller.AnyAsync(e => e.Id == Dto.SellerId);
 
-            if (!SalesLineId || !CustomerId || SellerId)
+            if (!SalesLineId || !CustomerId || !SellerId)
             {
                 return new ResultDto()
                 {
@@ -49,8 +49,9 @@ namespace Application.Services.PreInvoiceHeaderServices.Command
                 SellerId = Dto.SellerId,
             };
 
-            await _context.SalesLineInSeller.AddAsync(NewSalesLineInSeller);
             await _context.PreInvoiceHeader.AddAsync(NewPreInvoiceHeader);
+            await _context.SaveChangesAsync();
+            await _context.SalesLineInSeller.AddAsync(NewSalesLineInSeller);
             await _context.SaveChangesAsync();
 
             return new ResultDto()

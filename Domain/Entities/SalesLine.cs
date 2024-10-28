@@ -12,5 +12,6 @@ namespace Domain.Entities
         public string Name { get; set; }
 
         public virtual ICollection<SalesLineInProduct> SalesLineInProducts { get; set; }
+        public virtual ICollection<SalesLineInSeller> SalesLineInSellers { get; set; }
     }
 }

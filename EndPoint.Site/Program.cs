@@ -3,7 +3,6 @@ using Application.Services.DetailPreInvoiceServices.Command;
 using Application.Services.DetailPreInvoiceServices.Queries;
 using Application.Services.DiscountServices.Command;
 using Application.Services.DiscountServices.Queries;
-using Application.Services.GetDiscountServices.Queries;
 using Application.Services.PreInvoiceHeaderServices.Command;
 using Application.Services.PreInvoiceHeaderServices.Queries;
 using Domain.Entities;
@@ -36,7 +35,7 @@ builder.Services.AddScoped<AddPreInvoiceHeaderService>();
 builder.Services.AddScoped<DeletePreInvoiceHeaderService>();
 builder.Services.AddScoped<UpdatePreInvoiceHeaderService>();
 builder.Services.AddScoped<GetAllPreInvoiceHeaderService>();
-builder.Services.AddScoped<GetDetailPreInvoiceService>();
+builder.Services.AddScoped<GetPreInvoiceHeaderService>();
 
 //Discount Services
 builder.Services.AddScoped<AddDiscountService>();

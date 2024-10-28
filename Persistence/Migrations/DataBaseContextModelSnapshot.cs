@@ -244,7 +244,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Discount", b =>
                 {
                     b.HasOne("Domain.Entities.DetailPreInvoice", "DetailPreInvoice")
-                        .WithMany()
+                        .WithMany("Discounts")
                         .HasForeignKey("DetailPreInvoiceId");
 
                     b.HasOne("Domain.Entities.PreInvoiceHeader", "PreInvoiceHeader")
@@ -278,7 +278,7 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.SalesLine", "SalesLine")
-                        .WithMany()
+                        .WithMany("SalesLineInProducts")
                         .HasForeignKey("SalesLineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -297,13 +297,13 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.SalesLine", "SalesLine")
-                        .WithMany()
+                        .WithMany("SalesLineInSellers")
                         .HasForeignKey("SalesLineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Seller", "Seller")
-                        .WithMany()
+                        .WithMany("SalesLineInSellers")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -315,6 +315,11 @@ namespace Persistence.Migrations
                     b.Navigation("Seller");
                 });
 
+            modelBuilder.Entity("Domain.Entities.DetailPreInvoice", b =>
+                {
+                    b.Navigation("Discounts");
+                });
+
             modelBuilder.Entity("Domain.Entities.PreInvoiceHeader", b =>
                 {
                     b.Navigation("DetailPreInvoice")
@@ -322,6 +327,18 @@ namespace Persistence.Migrations
 
                     b.Navigation("SalesLineInSeller")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.SalesLine", b =>
+                {
+                    b.Navigation("SalesLineInProducts");
+
+                    b.Navigation("SalesLineInSellers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Seller", b =>
+                {
+                    b.Navigation("SalesLineInSellers");
                 });
 #pragma warning restore 612, 618
         }
