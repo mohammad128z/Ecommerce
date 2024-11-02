@@ -1,6 +1,9 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos.PreInvoiceHeaderDtos;
+using Application.Interfaces;
+using AutoMapper.QueryableExtensions;
 using Common.Dto;
 using Domain.Entities;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,14 +22,17 @@ namespace Application.Services.PreInvoiceHeaderServices.Queries
             _context = context;
         }
 
-        public async Task<ResultDto<IEnumerable<PreInvoiceHeader>>> Execute()
+        public async Task<ResultDto<IEnumerable<GetListPreInvoiceHeaderDto>>> Execute()
         {
-            var entitys = await _context.PreInvoiceHeader.ToListAsync();
-            return new ResultDto<IEnumerable<PreInvoiceHeader>>() 
+            var Headers = await _context.PreInvoiceHeader
+                .ProjectToType<GetListPreInvoiceHeaderDto>()
+                .ToListAsync();
+            
+            return new ResultDto<IEnumerable<GetListPreInvoiceHeaderDto>>()
             {
                 IsSuccess = true,
                 Message = "عملیات با موفقیت انجام شد",
-                Data = entitys
+                Data = Headers
             };
         }
     }

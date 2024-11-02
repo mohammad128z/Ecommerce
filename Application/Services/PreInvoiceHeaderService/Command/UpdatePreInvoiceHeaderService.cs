@@ -1,8 +1,9 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.PreInvoiceHeaderDtos;
 using Application.Interfaces;
 using Common.Dto;
 using Domain.Entities;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +20,30 @@ namespace Application.Services.PreInvoiceHeaderServices.Command
             _context = context;
         }
 
-        public async Task<ResultDto> Execute(PreInvoiceHeaderDto Dto, int InvoiceHeaderId)
+        public async Task<ResultDto> Execute(UpdatePreInvoiceHeaderDto Dto, int InvoiceHeaderId)
         {
-            var InvoiceHeader = await _context.DetailPreInvoice.FindAsync(InvoiceHeaderId);
+            var InvoiceHeader = await _context.PreInvoiceHeader.Include(e => e.SalesLineInSeller)
+                .FirstOrDefaultAsync(e => e.Id == InvoiceHeaderId);
             if (InvoiceHeader == null)
             {
                 return new ResultDto
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "شناسه وارد شده صحیح نمیباشد"
                 };
             }
-            Dto.Adapt(InvoiceHeader);
+            if (InvoiceHeader.State == StateType.Final)
+                return new ResultDto
+                {
+                    IsSuccess = false,
+                    Message = "اجازه ی تغییر در اطلاعات مرتبط با فاکتور نهایی شده وجود ندارد"
+                };
+
+            InvoiceHeader.State = Dto.State;
+            InvoiceHeader.CustomerId = Dto.CustomerId;
+            InvoiceHeader.SalesLineInSeller.SalesLineId = Dto.SalesLineId;
+            InvoiceHeader.SalesLineInSeller.SellerId = Dto.SellerId;            
+            
             await _context.SaveChangesAsync();
 
             return new ResultDto

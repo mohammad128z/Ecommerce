@@ -11,9 +11,9 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         public int? DetailPreInvoiceId{ get; set; }
-        public DetailPreInvoice DetailPreInvoice { get; set; }
+        public virtual DetailPreInvoice DetailPreInvoice { get; set; }
 
-        public PreInvoiceHeader PreInvoiceHeader { get; set; }
+        public virtual PreInvoiceHeader PreInvoiceHeader { get; set; }
         public int PreInvoiceHeaderId { get; set; }
 
         public DiscountType DiscountType { get; set; }

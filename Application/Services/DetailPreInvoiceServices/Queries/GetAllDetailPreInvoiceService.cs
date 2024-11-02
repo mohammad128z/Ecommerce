@@ -1,6 +1,8 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos.DetailPreInvoiceDtos;
+using Application.Interfaces;
 using Common.Dto;
 using Domain.Entities;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,14 +21,13 @@ namespace Application.Services.DetailPreInvoiceServices.Queries
             _context = context;
         }
 
-        public async Task<ResultDto<IEnumerable<DetailPreInvoice>>> Execute()
+        public async Task<ResultDto<IEnumerable<GetDetailPreInvoiceDto>>> Execute()
         {
-            var entitys = await _context.DetailPreInvoice.ToListAsync();
-            return new ResultDto<IEnumerable<DetailPreInvoice>>() 
+            return new ResultDto<IEnumerable<GetDetailPreInvoiceDto>>()
             {
                 IsSuccess = true,
                 Message = "عملیات با موفقیت انجام شد",
-                Data = entitys
+                Data = await _context.DetailPreInvoice.ProjectToType<GetDetailPreInvoiceDto>().ToListAsync()
             };
         }
     }

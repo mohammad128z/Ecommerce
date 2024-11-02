@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.Dtos.SellerDtos
 {
-    public class Customer
+    public class GetSellerDto
     {
         public int Id { get; set; }
-        [Required]
-        [StringLength(10,MinimumLength = 2)]
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }

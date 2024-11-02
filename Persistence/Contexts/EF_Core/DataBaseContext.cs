@@ -26,10 +26,14 @@ namespace Persistence.Contexts.EF_Core
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.UseLazyLoadingProxies();
+        }
 
-            //modelBuilder.Entity<SalesLineInProduct>().HasKey(e => new { e.SalesLineId, e.ProductId });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {            
+            modelBuilder.Entity<SalesLineInProduct>().HasKey(e => new { e.SalesLineId, e.ProductId });
 
             modelBuilder.Entity<DetailPreInvoice>()
                 .HasOne(dpi => dpi.PreInvoiceHeader)

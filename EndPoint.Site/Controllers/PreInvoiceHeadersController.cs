@@ -9,9 +9,9 @@ using Domain.Entities;
 using Persistence.Contexts.EF_Core;
 using Application.Services.PreInvoiceHeaderServices.Command;
 using Common.Dto;
-using Application.Dtos;
 using Application.Services.PreInvoiceHeaderServices.Queries;
 using Humanizer;
+using Application.Dtos.PreInvoiceHeaderDtos;
 
 namespace EndPoint.Site.Controllers
 {
@@ -58,7 +58,7 @@ namespace EndPoint.Site.Controllers
         // PUT: api/PreInvoiceHeaders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResultDto>> PutPreInvoiceHeader(int id, PreInvoiceHeaderDto Dto)
+        public async Task<ActionResult<ResultDto>> PutPreInvoiceHeader(int id, UpdatePreInvoiceHeaderDto Dto)
         {
             var ServiceResult = await _updatePreInvoiceHeaderService.Execute(Dto, id);
             if (ServiceResult.IsSuccess)

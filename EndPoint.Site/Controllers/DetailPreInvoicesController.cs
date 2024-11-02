@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Persistence.Contexts.EF_Core;
 using Application.Services.DetailPreInvoiceServices.Command;
-using Application.Dtos;
 using Common.Dto;
 using Application.Services.DetailPreInvoiceServices.Queries;
 using Application.Services.PreInvoiceHeaderServices.Queries;
+using Application.Dtos.DetailPreInvoiceDtos;
 
 namespace EndPoint.Site.Controllers
 {
@@ -64,7 +64,7 @@ namespace EndPoint.Site.Controllers
         // PUT: api/DetailPreInvoices/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResultDto>> PutDetailPreInvoice(int id, DetailPreInvoiceDto Dto)
+        public async Task<ActionResult<ResultDto>> PutDetailPreInvoice(int id, AddDetailPreInvoiceDto Dto)
         {
             var ServiceResult = await _updateDetailPreInvoiceService.Execute(Dto, id);
             if (ServiceResult.IsSuccess)
@@ -77,7 +77,7 @@ namespace EndPoint.Site.Controllers
         // POST: api/DetailPreInvoices
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ResultDto>> PostDetailPreInvoice(DetailPreInvoiceDto Dto)
+        public async Task<ActionResult<ResultDto>> PostDetailPreInvoice(AddDetailPreInvoiceDto Dto)
         {
             var ServiceResult = await _addDetailPreInvoiceService.Execute(Dto);
             if (ServiceResult.IsSuccess)

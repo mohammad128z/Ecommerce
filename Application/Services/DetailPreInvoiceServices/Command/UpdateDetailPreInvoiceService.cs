@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.DetailPreInvoiceDtos;
 using Application.Interfaces;
 using Common.Dto;
 using Domain.Entities;
@@ -19,17 +19,24 @@ namespace Application.Services.DetailPreInvoiceServices.Command
             _context = context;
         }
 
-        public async Task<ResultDto> Execute(DetailPreInvoiceDto Dto,int InvoiceDetailId)
+        public async Task<ResultDto> Execute(AddDetailPreInvoiceDto Dto,int InvoiceDetailId)
         {
             var InvoiceDetail = await _context.DetailPreInvoice.FindAsync(InvoiceDetailId);
-            if (InvoiceDetail == null)
-            {
+            if (InvoiceDetail == null)            
                 return new ResultDto
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Message = "شناسه وارد شده صحیح نمیباشد"
                 };
-            }
+            
+            await _context.Entry(InvoiceDetail).Reference(e => e.PreInvoiceHeader).LoadAsync();
+            if (InvoiceDetail.PreInvoiceHeader.State == StateType.Final)
+                return new ResultDto
+                {
+                    IsSuccess = false,
+                    Message = "اجازه ی تغییر در اطلاعات مرتبط با فاکتور نهایی شده وجود ندارد"
+                };
+
             Dto.Adapt(InvoiceDetail);
             await _context.SaveChangesAsync();
 

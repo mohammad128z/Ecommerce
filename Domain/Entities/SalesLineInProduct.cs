@@ -8,10 +8,10 @@ namespace Domain.Entities
 {
     public class SalesLineInProduct
     {
-        public SalesLine SalesLine { get; set; }
+        public virtual SalesLine SalesLine { get; set; }
         public int SalesLineId { get; set; }
 
-        public Product Product { get; set; }
+        public virtual Product Product { get; set; }
         public int ProductId { get; set; }
     }
 }

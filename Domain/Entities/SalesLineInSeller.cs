@@ -13,10 +13,10 @@ namespace Domain.Entities
         public int PreInvoiceHeaderId { get; set; }
         public virtual PreInvoiceHeader PreInvoiceHeader { get; set; }
 
-        public SalesLine SalesLine { get; set; }
+        public virtual SalesLine SalesLine { get; set; }
         public int SalesLineId { get; set; }
 
-        public Seller Seller { get; set; }
+        public virtual Seller Seller { get; set; }
         public int SellerId { get; set; }
     }
 }

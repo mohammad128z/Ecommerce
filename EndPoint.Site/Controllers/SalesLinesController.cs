@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Persistence.Contexts.EF_Core;
-using Application.Dtos;
 using Mapster;
+using Application.Dtos.SalesLineDtos;
 
 namespace EndPoint.Site.Controllers
 {
@@ -78,7 +78,7 @@ namespace EndPoint.Site.Controllers
         // POST: api/SalesLines
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SalesLine>> PostSalesLine(SalesLineDto Dto)
+        public async Task<ActionResult<SalesLine>> PostSalesLine(AddSalesLineDto Dto)
         {
             var NewSalesLine = Dto.Adapt<SalesLine>();
             _context.SalesLine.Add(NewSalesLine);

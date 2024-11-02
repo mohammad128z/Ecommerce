@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.PreInvoiceHeaderDtos;
 using Application.Interfaces;
 using Common.Dto;
 using Domain.Entities;
@@ -22,21 +22,7 @@ namespace Application.Services.PreInvoiceHeaderServices.Command
         }
 
         public async Task<ResultDto> Execute(AddPreInvoiceHeaderDto Dto)
-        {
-            bool SalesLineId = await _context.SalesLine.AnyAsync(e => e.Id == Dto.SalesLineId);
-            bool CustomerId = await _context.Customer.AnyAsync(e => e.Id == Dto.CustomerId);
-            bool SellerId = await _context.Seller.AnyAsync(e => e.Id == Dto.SellerId);
-
-            if (!SalesLineId || !CustomerId || !SellerId)
-            {
-                return new ResultDto()
-                {
-                    IsSuccess = false,
-                    Message = "اطلاعات وارد شده صحیح نمیباشد"
-                };
-            }
-
-            //var entity = Dto.Adapt<PreInvoiceHeader>();
+        {                        
             var NewPreInvoiceHeader = new PreInvoiceHeader
             {
                 CustomerId = Dto.CustomerId,
@@ -49,8 +35,7 @@ namespace Application.Services.PreInvoiceHeaderServices.Command
                 SellerId = Dto.SellerId,
             };
 
-            await _context.PreInvoiceHeader.AddAsync(NewPreInvoiceHeader);
-            await _context.SaveChangesAsync();
+            await _context.PreInvoiceHeader.AddAsync(NewPreInvoiceHeader);            
             await _context.SalesLineInSeller.AddAsync(NewSalesLineInSeller);
             await _context.SaveChangesAsync();
 

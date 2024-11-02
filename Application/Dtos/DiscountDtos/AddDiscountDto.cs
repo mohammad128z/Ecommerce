@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Dtos
+namespace Application.Dtos.DiscountDtos
 {
-    public class DiscountDto
+    public class AddDiscountDto
     {
         public int? DetailPreInvoiceId { get; set; }
 

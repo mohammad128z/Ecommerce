@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.DiscountDtos;
 using Application.Interfaces;
 using Common.Dto;
 using Domain.Entities;
@@ -21,7 +21,7 @@ namespace Application.Services.DiscountServices.Command
             _context = context;
         }
 
-        public async Task<ResultDto> Execute(DiscountDto Dto)
+        public async Task<ResultDto> Execute(AddDiscountDto Dto)
         {
             if (Dto.DiscountType == DiscountType.Row && Dto.DetailPreInvoiceId == null)
             {

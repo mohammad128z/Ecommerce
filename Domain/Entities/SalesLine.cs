@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Entities
-{
+{    
     public class SalesLine
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public virtual ICollection<SalesLineInProduct> SalesLineInProducts { get; set; }
         public virtual ICollection<SalesLineInSeller> SalesLineInSellers { get; set; }
     }

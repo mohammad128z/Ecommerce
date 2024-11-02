@@ -11,7 +11,7 @@ using Application.Services.DiscountServices.Command;
 using Application.Services.PreInvoiceHeaderServices.Queries;
 using Application.Services.DiscountServices.Queries;
 using Common.Dto;
-using Application.Dtos;
+using Application.Dtos.DiscountDtos;
 
 
 namespace EndPoint.Site.Controllers
@@ -59,7 +59,7 @@ namespace EndPoint.Site.Controllers
         // PUT: api/Discounts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResultDto>> PutDiscount(int id, DiscountDto Dto)
+        public async Task<ActionResult<ResultDto>> PutDiscount(int id, AddDiscountDto Dto)
         {
             var ServiceResult = await _updateDiscountService.Execute(Dto, id);
             if (ServiceResult.IsSuccess)
@@ -72,7 +72,7 @@ namespace EndPoint.Site.Controllers
         // POST: api/Discounts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Discount>> PostDiscount(DiscountDto Dto)
+        public async Task<ActionResult<Discount>> PostDiscount(AddDiscountDto Dto)
         {
             var ServiceResult = await _addDiscountService.Execute(Dto);
             if (ServiceResult.IsSuccess)
